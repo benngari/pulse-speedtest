@@ -3,6 +3,7 @@ import Gauge from './components/Gauge.jsx';
 import Oscilloscope from './components/Oscilloscope.jsx';
 import ResultsGrid from './components/ResultsGrid.jsx';
 import ReportPanel from './components/ReportPanel.jsx';
+import ISPInfo from './components/ISPInfo.jsx';
 import { measurePing, measureDownload, measureUpload } from './lib/speedTest.js';
 import { buildReport } from './lib/recommendations.js';
 import './App.css';
@@ -16,14 +17,31 @@ const PHASES = {
   ERROR: 'error',
 };
 
+const STEPS = [
+  { key: PHASES.PING, label: 'Latency' },
+  { key: PHASES.DOWNLOAD, label: 'Download' },
+  { key: PHASES.UPLOAD, label: 'Upload' },
+];
+
 const PHASE_LABEL = {
   [PHASES.IDLE]: 'Ready when you are',
-  [PHASES.PING]: 'Measuring latency\u2026',
-  [PHASES.DOWNLOAD]: 'Measuring download\u2026',
-  [PHASES.UPLOAD]: 'Measuring upload\u2026',
+  [PHASES.PING]: 'Measuring latency…',
+  [PHASES.DOWNLOAD]: 'Measuring download…',
+  [PHASES.UPLOAD]: 'Measuring upload…',
   [PHASES.DONE]: 'Test complete',
   [PHASES.ERROR]: 'Could not complete the test',
 };
+
+function stepStatus(stepKey, phase) {
+  const order = [PHASES.PING, PHASES.DOWNLOAD, PHASES.UPLOAD];
+  const phaseIdx = order.indexOf(phase);
+  const stepIdx = order.indexOf(stepKey);
+  if (phase === PHASES.DONE) return 'done';
+  if (phaseIdx === -1) return 'pending';
+  if (stepIdx < phaseIdx) return 'done';
+  if (stepIdx === phaseIdx) return 'active';
+  return 'pending';
+}
 
 export default function App() {
   const [phase, setPhase] = useState(PHASES.IDLE);
@@ -99,22 +117,32 @@ export default function App() {
         <p className="subtitle">A straight read on what your connection can actually do.</p>
       </header>
 
-      <main className="instrument-panel">
-        <div className="gauge-row">
-          <Gauge value={gaugeValue} label={gaugeLabel} unit={gaugeUnit} maxHint={results.download || 100} />
+      <ISPInfo />
+
+      <main className={`instrument-panel ${running ? 'instrument-panel--active' : ''}`}>
+        <div className="gauge-glow" data-active={running}>
+          <div className="gauge-row">
+            <Gauge value={gaugeValue} label={gaugeLabel} unit={gaugeUnit} maxHint={results.download || 100} />
+          </div>
         </div>
 
-        <div className="phase-line">
-          <span className={`phase-dot phase-dot--${phase}`} />
-          {PHASE_LABEL[phase]}
+        <div className="stepper">
+          {STEPS.map((s) => (
+            <div key={s.key} className="stepper-item" data-status={stepStatus(s.key, phase)}>
+              <span className="stepper-dot" />
+              <span className="stepper-label">{s.label}</span>
+            </div>
+          ))}
         </div>
+
+        <div className="phase-line">{PHASE_LABEL[phase]}</div>
 
         <div className="trace-strip">
           <Oscilloscope samples={samples} />
         </div>
 
         <button className="run-button" onClick={runTest} disabled={running}>
-          {phase === PHASES.DONE ? 'Run again' : running ? 'Testing\u2026' : 'Start test'}
+          {phase === PHASES.DONE ? 'Run again' : running ? 'Testing…' : 'Start test'}
         </button>
 
         {phase === PHASES.ERROR && (
@@ -124,16 +152,22 @@ export default function App() {
         )}
 
         {(phase === PHASES.DONE || results.ping != null) && (
-          <ResultsGrid
-            download={results.download}
-            upload={results.upload}
-            ping={results.ping}
-            jitter={results.jitter}
-          />
+          <div className="fade-in-up">
+            <ResultsGrid
+              download={results.download}
+              upload={results.upload}
+              ping={results.ping}
+              jitter={results.jitter}
+            />
+          </div>
         )}
       </main>
 
-      {report && <ReportPanel report={report} />}
+      {report && (
+        <div className="fade-in-up">
+          <ReportPanel report={report} />
+        </div>
+      )}
 
       <footer className="app-footer">Measurements run directly from your browser to the test server — nothing is stored.</footer>
     </div>

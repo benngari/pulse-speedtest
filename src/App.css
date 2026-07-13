@@ -6,7 +6,7 @@
 
 .app-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .eyebrow {
@@ -21,11 +21,14 @@
 
 .title {
   font-family: var(--display);
-  font-size: 56px;
+  font-size: 60px;
   font-weight: 700;
   margin: 0;
-  letter-spacing: -0.02em;
-  color: var(--ink);
+  letter-spacing: -0.03em;
+  background: linear-gradient(120deg, var(--ink) 40%, var(--amber-dim));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .subtitle {
@@ -35,12 +38,93 @@
   margin: 10px 0 0;
 }
 
-.instrument-panel {
+/* ISP card ------------------------------------------------------------ */
+
+.isp-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 420px;
+  margin: 0 auto 24px;
+  padding: 12px 18px;
   background: var(--panel);
   border: 1px solid var(--paper-line);
-  border-radius: 4px;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px var(--shadow);
+}
+
+.isp-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--paper-line);
+}
+.isp-dot[data-status="loading"] { background: var(--amber); animation: pulse-dot 1s ease-in-out infinite; }
+.isp-dot[data-status="ready"] { background: var(--teal); }
+.isp-dot[data-status="error"] { background: var(--red); }
+
+.isp-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.isp-line {
+  font-family: var(--body);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.isp-provider {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.isp-meta {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Instrument panel ------------------------------------------------------ */
+
+.instrument-panel {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--paper-line);
+  border-radius: 6px;
   padding: 36px 32px 28px;
   box-shadow: 0 12px 30px var(--shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+.instrument-panel--active {
+  box-shadow: 0 16px 40px var(--shadow), 0 0 0 1px var(--amber-dim);
+}
+
+.gauge-glow {
+  display: flex;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.gauge-glow[data-active="true"] {
+  animation: glow-pulse 1.6s ease-in-out infinite;
+  border-radius: 50%;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(232, 163, 61, 0)); }
+  50% { filter: drop-shadow(0 0 18px rgba(232, 163, 61, 0.35)); }
 }
 
 .gauge-row {
@@ -48,43 +132,58 @@
   justify-content: center;
 }
 
-.phase-line {
+/* Stepper --------------------------------------------------------------- */
+
+.stepper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  margin-top: 6px;
+}
+
+.stepper-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--paper-line);
+  transition: color 0.25s ease;
+}
+
+.stepper-item[data-status="active"] { color: var(--amber-dim); }
+.stepper-item[data-status="done"] { color: var(--teal); }
+
+.stepper-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.stepper-item[data-status="active"] .stepper-dot {
+  animation: pulse-dot 0.9s ease-in-out infinite;
+}
+
+.phase-line {
+  text-align: center;
   font-family: var(--mono);
   font-size: 12px;
   color: var(--ink-soft);
-  letter-spacing: 0.04em;
-  margin-top: 4px;
-  min-height: 18px;
+  margin-top: 10px;
+  min-height: 16px;
 }
-
-.phase-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--paper-line);
-}
-
-.phase-dot--ping,
-.phase-dot--download,
-.phase-dot--upload {
-  background: var(--amber);
-  animation: pulse-dot 1s ease-in-out infinite;
-}
-
-.phase-dot--done { background: var(--teal); }
-.phase-dot--error { background: var(--red); }
 
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+  50% { opacity: 0.3; }
 }
 
 .trace-strip {
-  margin: 20px 0 8px;
+  margin: 18px 0 8px;
   padding: 8px 0;
   border-top: 1px solid var(--paper-line);
   border-bottom: 1px solid var(--paper-line);
@@ -93,20 +192,25 @@
 .run-button {
   display: block;
   margin: 24px auto 0;
-  padding: 14px 36px;
-  background: var(--ink);
+  padding: 14px 38px;
+  background: linear-gradient(135deg, var(--ink) 0%, #2c4536 100%);
   color: var(--panel);
   border: none;
-  border-radius: 3px;
+  border-radius: 999px;
   font-family: var(--display);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  box-shadow: 0 6px 18px rgba(27, 43, 34, 0.25);
 }
 
-.run-button:hover:not(:disabled) { transform: translateY(-1px); }
+.run-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(27, 43, 34, 0.3);
+}
+.run-button:active:not(:disabled) { transform: translateY(0); }
 .run-button:disabled { opacity: 0.55; cursor: default; }
 
 .error-copy {
@@ -116,6 +220,8 @@
   margin-top: 14px;
 }
 
+/* Results ----------------------------------------------------------------- */
+
 .results-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -123,19 +229,22 @@
   background: var(--paper-line);
   margin-top: 28px;
   border: 1px solid var(--paper-line);
-  border-radius: 3px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
 .result-cell {
   background: var(--panel);
-  padding: 16px 12px;
+  padding: 18px 12px;
   text-align: center;
+  transition: background 0.2s ease;
 }
+
+.result-cell:hover { background: #F4F7F2; }
 
 .result-value {
   font-family: var(--mono);
-  font-size: 24px;
+  font-size: 25px;
   font-weight: 600;
   color: var(--ink);
 }
@@ -160,10 +269,12 @@
   margin-top: 2px;
 }
 
+/* Report ------------------------------------------------------------------ */
+
 .report-panel {
   background: var(--panel);
   border: 1px solid var(--paper-line);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 28px 32px;
   margin-top: 20px;
   box-shadow: 0 12px 30px var(--shadow);
@@ -233,8 +344,21 @@
   margin-top: 32px;
 }
 
+/* Entrance animation -------------------------------------------------------- */
+
+.fade-in-up {
+  animation: fade-in-up 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 560px) {
-  .title { font-size: 40px; }
+  .title { font-size: 42px; }
   .results-grid { grid-template-columns: repeat(2, 1fr); }
   .instrument-panel { padding: 28px 18px 22px; }
+  .stepper { gap: 16px; }
+  .isp-card { max-width: 100%; }
 }
