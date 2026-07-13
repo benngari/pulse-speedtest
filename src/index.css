@@ -1,0 +1,49 @@
+:root {
+  --paper: #EEF2ED;
+  --paper-line: #CBD6C6;
+  --panel: #FBFCFA;
+  --ink: #1B2B22;
+  --ink-soft: #4C5C51;
+  --amber: #E8A33D;
+  --amber-dim: #C98A2C;
+  --teal: #2F8F7A;
+  --red: #C1443C;
+  --shadow: rgba(27, 43, 34, 0.10);
+
+  --display: 'Space Grotesk', sans-serif;
+  --body: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--paper-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--ink);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--amber-dim);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

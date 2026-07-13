@@ -1,0 +1,240 @@
+.app-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.title {
+  font-family: var(--display);
+  font-size: 56px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.subtitle {
+  font-family: var(--body);
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin: 10px 0 0;
+}
+
+.instrument-panel {
+  background: var(--panel);
+  border: 1px solid var(--paper-line);
+  border-radius: 4px;
+  padding: 36px 32px 28px;
+  box-shadow: 0 12px 30px var(--shadow);
+}
+
+.gauge-row {
+  display: flex;
+  justify-content: center;
+}
+
+.phase-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+  min-height: 18px;
+}
+
+.phase-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--paper-line);
+}
+
+.phase-dot--ping,
+.phase-dot--download,
+.phase-dot--upload {
+  background: var(--amber);
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+
+.phase-dot--done { background: var(--teal); }
+.phase-dot--error { background: var(--red); }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.trace-strip {
+  margin: 20px 0 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--paper-line);
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.run-button {
+  display: block;
+  margin: 24px auto 0;
+  padding: 14px 36px;
+  background: var(--ink);
+  color: var(--panel);
+  border: none;
+  border-radius: 3px;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.run-button:hover:not(:disabled) { transform: translateY(-1px); }
+.run-button:disabled { opacity: 0.55; cursor: default; }
+
+.error-copy {
+  text-align: center;
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 14px;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--paper-line);
+  margin-top: 28px;
+  border: 1px solid var(--paper-line);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.result-cell {
+  background: var(--panel);
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.result-value {
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.result-meta {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.result-unit {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+}
+
+.result-label {
+  font-family: var(--body);
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.report-panel {
+  background: var(--panel);
+  border: 1px solid var(--paper-line);
+  border-radius: 4px;
+  padding: 28px 32px;
+  margin-top: 20px;
+  box-shadow: 0 12px 30px var(--shadow);
+}
+
+.report-header { margin-bottom: 16px; }
+
+.report-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.report-headline {
+  font-family: var(--display);
+  font-size: 22px;
+  margin: 6px 0 0;
+  color: var(--ink);
+}
+
+.report-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.report-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px dashed var(--paper-line);
+}
+
+.report-row:first-child { border-top: none; }
+
+.report-mark {
+  font-size: 14px;
+  line-height: 1.6;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+
+.report-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.report-copy {
+  font-family: var(--body);
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.app-footer {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-top: 32px;
+}
+
+@media (max-width: 560px) {
+  .title { font-size: 40px; }
+  .results-grid { grid-template-columns: repeat(2, 1fr); }
+  .instrument-panel { padding: 28px 18px 22px; }
+}
