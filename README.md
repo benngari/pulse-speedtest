@@ -28,5 +28,4 @@ zero-byte request to the same host for latency + jitter.
 npm run build
 ```
 
-Outputs static files to `dist/` — deploy to Vercel, GitHub Pages, etc.,
-same as your other projects.
+
