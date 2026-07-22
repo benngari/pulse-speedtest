@@ -3,11 +3,7 @@
 A speed test that reads download, upload, ping, and jitter, then translates
 the numbers into plain language: what's this connection actually good for
 right now (streaming, calls, gaming, uploads).
-```
 
-Then open the printed localhost URL.
-
-## How it measures
 
 Runs entirely in the browser — no backend needed. It uses Cloudflare's
 public speed-test endpoints (`speed.cloudflare.com/__down` and `/__up`,
