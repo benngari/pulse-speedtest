@@ -3,12 +3,6 @@
 A speed test that reads download, upload, ping, and jitter, then translates
 the numbers into plain language: what's this connection actually good for
 right now (streaming, calls, gaming, uploads).
-
-## Run it
-
-```bash
-npm install
-npm run dev
 ```
 
 Then open the printed localhost URL.
